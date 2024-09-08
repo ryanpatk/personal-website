@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const gridRef = useRef<number[][]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,7 +13,6 @@ function App() {
 
     const CELL_SIZE = 5;
     let ROWS: number, COLS: number;
-    let grid: number[][];
 
     function resizeCanvas() {
       if (!canvas) return;
@@ -20,7 +20,9 @@ function App() {
       canvas.height = window.innerHeight;
       COLS = Math.ceil(canvas.width / CELL_SIZE);
       ROWS = Math.ceil(canvas.height / CELL_SIZE);
-      grid = new Array(ROWS).fill(null).map(() => new Array(COLS).fill(0));
+      gridRef.current = new Array(ROWS)
+        .fill(null)
+        .map(() => new Array(COLS).fill(0));
       initializeGrid();
     }
 
@@ -73,7 +75,7 @@ function App() {
           gun.forEach((row, y) => {
             row.forEach((cell, x) => {
               if (cell === 1) {
-                grid[y + offsetY][x + offsetX] = 1;
+                gridRef.current[y + offsetY][x + offsetX] = 1;
               }
             });
           });
@@ -84,7 +86,7 @@ function App() {
       for (let i = 0; i < 1000; i++) {
         const x = Math.floor(Math.random() * COLS);
         const y = Math.floor(Math.random() * ROWS);
-        grid[y][x] = 1;
+        gridRef.current[y][x] = 1;
       }
     }
 
@@ -93,7 +95,7 @@ function App() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let y = 0; y < ROWS; y++) {
         for (let x = 0; x < COLS; x++) {
-          if (grid[y][x] === 1) {
+          if (gridRef.current[y][x] === 1) {
             ctx.fillStyle = 'rgba(75, 85, 99, 0.5)';
             ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
           }
@@ -108,25 +110,25 @@ function App() {
           if (i === 0 && j === 0) continue;
           const newY = (y + i + ROWS) % ROWS;
           const newX = (x + j + COLS) % COLS;
-          count += grid[newY][newX];
+          count += gridRef.current[newY][newX];
         }
       }
       return count;
     }
 
     function updateGrid() {
-      const newGrid = grid.map((arr) => [...arr]);
+      const newGrid = gridRef.current.map((arr) => [...arr]);
       for (let y = 0; y < ROWS; y++) {
         for (let x = 0; x < COLS; x++) {
           const neighbors = countNeighbors(x, y);
-          if (grid[y][x] === 1 && (neighbors < 2 || neighbors > 3)) {
+          if (gridRef.current[y][x] === 1 && (neighbors < 2 || neighbors > 3)) {
             newGrid[y][x] = 0;
-          } else if (grid[y][x] === 0 && neighbors === 3) {
+          } else if (gridRef.current[y][x] === 0 && neighbors === 3) {
             newGrid[y][x] = 1;
           }
         }
       }
-      grid = newGrid;
+      gridRef.current = newGrid;
     }
 
     let isDrawing = false;
@@ -138,7 +140,7 @@ function App() {
         for (let j = -1; j <= 1; j++) {
           const newX = (cellX + i + COLS) % COLS;
           const newY = (cellY + j + ROWS) % ROWS;
-          grid[newY][newX] = 1;
+          gridRef.current[newY][newX] = 1;
         }
       }
     }
@@ -183,21 +185,25 @@ function App() {
   }, []);
 
   function handleFightEntropy() {
-    console.log('Fight entropy clicked!');
     const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!canvas) {
+      return;
+    }
 
     const CELL_SIZE = 5;
     const ROWS = Math.ceil(canvas.height / CELL_SIZE);
     const COLS = Math.ceil(canvas.width / CELL_SIZE);
+    const grid = gridRef.current;
+
+    if (!grid || grid.length === 0) {
+      return;
+    }
+
     const livingCells = [];
 
     for (let y = 0; y < ROWS; y++) {
       for (let x = 0; x < COLS; x++) {
-        if (ctx.getImageData(x * CELL_SIZE, y * CELL_SIZE, 1, 1).data[3] > 0) {
+        if (grid[y][x] === 1) {
           livingCells.push([y, x]);
         }
       }
@@ -215,8 +221,11 @@ function App() {
       Math.floor(livingCells.length / 2),
     );
     cellsToRemove.forEach(([y, x]) => {
-      ctx.clearRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+      grid[y][x] = 0;
     });
+
+    // Update gridRef
+    gridRef.current = grid;
   }
 
   return (
