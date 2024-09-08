@@ -220,64 +220,70 @@ function App() {
   }
 
   return (
-    <div className="bg-gray-900 text-gray-300 min-h-screen flex flex-col justify-center items-center">
-      <canvas id="game-of-life" ref={canvasRef} />
-      <main className="p-8 max-w-2xl w-full mx-auto main-content">
-        <h1 className="text-2xl font-bold mt-2">Ryan Atkinson</h1>
-        <p className="text-xl mb-8">@ryanpatk</p>
+    <div className="bg-gray-900 text-gray-300 min-h-screen w-full">
+      <canvas
+        id="game-of-life"
+        ref={canvasRef}
+        className="fixed top-0 left-0 w-full h-full z-10"
+      />
+      <div className="flex flex-col justify-center pt-10 w-full">
+        <main className="p-8 max-w-2xl w-full mx-auto relative z-20 pointer-events-none text-shadow-lg">
+          <h1 className="text-2xl font-bold mt-2">Ryan Atkinson</h1>
+          <p className="text-xl mb-8">@ryanpatk</p>
 
-        <section className="mb-8">
-          <p
-            className="mt-8 italic cursor-pointer hover:text-green-400 transition-colors duration-200"
-            id="fight-entropy"
-            onClick={handleFightEntropy}
-          >
-            Fight entropy.
-          </p>
-          <p className="mt-4">
-            This is my personal website. Not a very serious place. I enjoy
-            exploring the inner reaches of outer space. I am a software
-            developer with a passion for cognitive science, religious studies,
-            UAP, and building cool things. More and more it seems like
-            everything is converging. Shoot me a DM on one of my socials if you
-            want to chat.
-          </p>
-        </section>
+          <section className="mb-8">
+            <p
+              className="mt-8 italic cursor-pointer hover:text-green-400 transition-colors duration-200 pointer-events-auto"
+              onClick={handleFightEntropy}
+            >
+              Fight entropy.
+            </p>
+            <p className="mt-4">
+              This is my personal website. Not a very serious place. I enjoy
+              exploring the inner reaches of outer space. I am a software
+              developer with a passion for cognitive science, religious studies,
+              UAP, and building cool things. More and more it seems like
+              everything is converging. Shoot me a DM on one of my socials if
+              you want to chat.
+            </p>
+          </section>
 
-        <ul className="flex space-x-4 mt-4 mb-8">
-          <li>
-            <a
-              href="https://twitter.com/ryanpatk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-green-400 hover:bg-gray-800 px-2 py-1 rounded transition-colors duration-200"
-            >
-              X
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/ryanpatk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-green-400 hover:bg-gray-800 px-2 py-1 rounded transition-colors duration-200"
-            >
-              GitHub
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.linkedin.com/in/ryanpatk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-green-400 hover:bg-gray-800 px-2 py-1 rounded transition-colors duration-200"
-            >
-              LinkedIn
-            </a>
-          </li>
-        </ul>
-      </main>
-      <footer className="mt-auto p-4 text-center text-sm opacity-70 content">
+          <ul className="flex space-x-4 mt-4 mb-8">
+            <li>
+              <a
+                href="https://twitter.com/ryanpatk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-green-400 hover:bg-gray-800 px-2 py-1 rounded transition-colors duration-200 pointer-events-auto"
+              >
+                X
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/ryanpatk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-green-400 hover:bg-gray-800 px-2 py-1 rounded transition-colors duration-200 pointer-events-auto"
+              >
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/ryanpatk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-green-400 hover:bg-gray-800 px-2 py-1 rounded transition-colors duration-200 pointer-events-auto"
+              >
+                LinkedIn
+              </a>
+            </li>
+          </ul>
+        </main>
+      </div>
+
+      <footer className="mt-auto p-4 text-center text-sm opacity-70 content absolute bottom-0 w-full">
         &copy; 2024 Ryan Atkinson. All rights reserved.
       </footer>
     </div>
