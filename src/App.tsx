@@ -226,8 +226,8 @@ function App() {
         ref={canvasRef}
         className="fixed top-0 left-0 w-full h-full z-10"
       />
-      <div className="flex flex-col justify-center pt-10 w-full">
-        <main className="p-8 max-w-2xl w-full mx-auto relative z-20 pointer-events-none text-shadow-lg">
+      <div className="flex flex-col pt-10 w-full">
+        <main className="p-8 max-w-2xl w-full relative z-20 pointer-events-none text-shadow-lg">
           <h1 className="text-2xl font-bold mt-2">Ryan Atkinson</h1>
           <p className="text-xl mb-8">@ryanpatk</p>
 
